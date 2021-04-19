@@ -1,0 +1,10 @@
+[package]
+build_dir = build/ICSNPP_Ethercat.tgz
+script_dir = build/scripts/icsnpp/ethercat
+build_command = ./configure && make
+description = Ethercat plugin for parsing and logging of the Ethercat protocol - CISA ICSNPP
+credits = Devin Vollmer <devin.vollmer@inl.gov>
+tags =  ecat, ECAT, ethercat, Ethercat, ics, ICS, CISA, INL, ICSNPP, icsnpp, zeek plugin, log writer, packet analyzer
+depends =
+  zkg >=2.0
+  zeek >=4.0.0

@@ -1,0 +1,62 @@
+## events.bif
+##
+## Ethercat Packet Analyzer - Defines events the analyzer will generate 
+##
+## Author:  Devin Vollmer
+## Contact: devin.vollmer@inl.gov
+##
+## Copyright (c) 2020 Battelle Energy Alliance, LLC.  All rights reserved.
+
+event ecat_log_address%(mac_src: string, 
+                        mac_dst: string, 
+                        data_len: count, 
+                        data_cmd: count, 
+                        data_addr: string, 
+                        data: string%);
+
+event ecat_registers%(mac_src: string, 
+                      mac_dst: string, 
+                      slave_addr: count, 
+                      reg_type: count, 
+                      reg_addr: count, 
+                      data_cmd: count, 
+                      data: string%);
+
+event ecat_device%(SlaveId: count, 
+                   Revision: count, 
+                   Type: count, 
+                   Build: count, 
+                   FmmuCnt: count, 
+                   SmCnt: count, 
+                   Ports: count, 
+                   Dpram: count, 
+                   Features: count%);
+
+event ecat_AoE%(targetid: string, 
+                senderid: string, 
+                targetport: count, 
+                senderport: count, 
+                cmd: count, 
+                stateflags: count, 
+                req_res: string%);
+
+event ecat_CoE%(number: count, 
+                Type: count, 
+                req_resp: count, 
+                index: count, 
+                subindex: count, 
+                dataoffset: count%);
+
+event ecat_FoE%(opCode: count, 
+                reserved: count, 
+                packet_num: count, 
+                error_code: count, 
+                filename: string, 
+                data: string%);
+
+event ecat_SoE%(opCode: count, 
+                incomplete: count, 
+                error: count, 
+                drive_num: count, 
+                element_flags: count, 
+                index: count%);

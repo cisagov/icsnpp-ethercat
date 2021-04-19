@@ -1,0 +1,17 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	ecat_arp_info
+#open	2021-04-19-18-15-22
+#fields	ts	arp_type	mac_src	mac_dst	SPA	SHA	TPA	THA
+#types	time	string	string	string	addr	string	addr	string
+1603303526.313857	Request	00:01:05:4c:b8:af	ff:ff:ff:ff:ff:ff	0.0.0.0	00:01:05:4c:b8:af	169.254.93.65	00:00:00:00:00:00
+1603303526.313858	Request	00:01:05:4c:b8:af	ff:ff:ff:ff:ff:ff	0.0.0.0	00:01:05:4c:b8:af	169.254.93.65	00:00:00:00:00:00
+1603303527.311987	Request	00:01:05:4c:b8:af	ff:ff:ff:ff:ff:ff	0.0.0.0	00:01:05:4c:b8:af	169.254.93.65	00:00:00:00:00:00
+1603303527.311988	Request	00:01:05:4c:b8:af	ff:ff:ff:ff:ff:ff	0.0.0.0	00:01:05:4c:b8:af	169.254.93.65	00:00:00:00:00:00
+1603303528.310268	Request	00:01:05:4c:b8:af	ff:ff:ff:ff:ff:ff	0.0.0.0	00:01:05:4c:b8:af	169.254.93.65	00:00:00:00:00:00
+1603303528.310268	Request	00:01:05:4c:b8:af	ff:ff:ff:ff:ff:ff	0.0.0.0	00:01:05:4c:b8:af	169.254.93.65	00:00:00:00:00:00
+1603303529.308262	Request	00:01:05:4c:b8:af	ff:ff:ff:ff:ff:ff	169.254.93.65	00:01:05:4c:b8:af	169.254.93.65	00:00:00:00:00:00
+1603303529.308262	Request	00:01:05:4c:b8:af	ff:ff:ff:ff:ff:ff	169.254.93.65	00:01:05:4c:b8:af	169.254.93.65	00:00:00:00:00:00
+#close	2021-04-19-18-15-22
