@@ -134,8 +134,8 @@ This log captures ECAT Device info and logs it to **ecat_dev_info.log**.
 | ----------------- |-----------|-----------------------------------------------------------| 
 | ts                | time      | Timestamp                                                 |
 | slave_id          | string    | Ethercat Slave Address                                    |
-| revision          | string    | Default Zeek connection info (IP addresses, ports)        |
-| dev_type          | string    | Number of functions per message                           |
+| revision          | string    | Revision of EtherCAT controller 					        |
+| dev_type          | string    | Type of EtherCAT controller                               |
 | build             | string    | Build version                                             |
 | fmmucnt           | string    | Fieldbus Memory Management Unit supported channel count   |
 | smcount           | string    | Sync Manager count                                        |
