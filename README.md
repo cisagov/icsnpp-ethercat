@@ -6,9 +6,9 @@ Industrial Control Systems Network Protocol Parsers (ICSNPP) - Ethercat.
 
 ICSNPP-Ethercat is a Zeek plugin for parsing and logging fields within the Ethercat protocol.
 
-This plugin was developed to be fully customizable, so if you would like to drill down into specific Ethercat packets and log certain variables, add the logging functionality to [scripts/main.zeek](scripts/main.zeek). The functions within [scripts/main.zeek](scripts/main.zeek) and [src/events.bif](src/events.bif) should prove to be a good guide on how to add new logging functionality.
+This plugin was developed to be fully customizable, so if you would like to drill down into specific Ethercat packets and log certain variables, add the logging functionality to [scripts/icsnpp/ethercat/main.zeek](scripts/icsnpp/ethercat/main.zeek). The functions within [scripts/icsnpp/ethercat/main.zeek](scripts/icsnpp/ethercat/main.zeek) and [src/events.bif](src/events.bif) should prove to be a good guide on how to add new logging functionality.
 
-This parser produces 8 log files. These log files are defined in [scripts/main.zeek](scripts/main.zeek).
+This parser produces 8 log files. These log files are defined in [scripts/icsnpp/ethercat/main.zeek](scripts/icsnpp/ethercat/main.zeek).
 * ecat_registers.log
 * ecat_log_address.log
 * ecat_dev_info.log 
