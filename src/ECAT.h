@@ -2,7 +2,7 @@
 // ECAT.h
 //
 // ECAT - Defines packet ECATAnalyzer class for ethercat packet analysis through
-//        zeek. 
+//        zeek.
 //
 // Author:  Devin Vollmer
 // Contact: devin.vollmer@inl.gov
@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include <packet_analysis/Analyzer.h>
-#include <packet_analysis/Component.h>
+#include "zeek/packet_analysis/Analyzer.h"
+#include "zeek/packet_analysis/Component.h"
 #include <sys/socket.h>
 #pragma once
 
@@ -37,7 +37,7 @@ namespace zeek::packet_analysis::ETHERCAT {
     } ecat_datagram;
 
     typedef struct {
-        uint8_t revision; 
+        uint8_t revision;
         uint8_t type;
         uint8_t fmmu_cnt;
         uint8_t sm_cnt;
@@ -103,7 +103,7 @@ namespace zeek::packet_analysis::ETHERCAT {
     // no pcap found to verify how to parse this information
     typedef struct {
         uint16_t index;
-        uint8_t opCode; 
+        uint8_t opCode;
         uint8_t incomplete;
         uint8_t error;
         uint8_t drive_num;
@@ -119,7 +119,7 @@ namespace zeek::packet_analysis::ETHERCAT {
     //     uint8_t counter;
     // } Ecat_Mailbox_VOE;
 
-    typedef struct 
+    typedef struct
     {
         ecat_mailbox_header header;
         ecat_mailbox_aoe aoe;

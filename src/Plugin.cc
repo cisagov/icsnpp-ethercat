@@ -1,9 +1,9 @@
 // Copyright (c) 2020 Battelle Energy Alliance, LLC.  All rights reserved."
 
 #include "Plugin.h"
-#include "packet_analysis/Component.h"
+#include "zeek/packet_analysis/Component.h"
 
-namespace plugin 
+namespace plugin
 {
     namespace ICSNPP_ETHERCAT
     {
@@ -23,7 +23,7 @@ zeek::plugin::Configuration Plugin::Configure()
     config.description = "Ethercat packet analyzer";
     config.version.major = 1;
     config.version.minor = 0;
-    
+
     return config;
 }
 
