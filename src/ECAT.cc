@@ -9,12 +9,12 @@
 
 #include "ECAT.h"
 #include "ECAT_ENUMS.h"
-#include "Event.h"
+#include "zeek/Event.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "events.bif.h"
 
-#include "zeek-config.h"
+#include "zeek/zeek-config.h"
 #ifdef HAVE_NET_ETHERNET_H
 #include <net/ethernet.h>
 #elif defined(HAVE_SYS_ETHERNET_H)
@@ -38,7 +38,7 @@ ECATAnalyzer::ECATAnalyzer()
 
 void ECATAnalyzer::Initialize()
     {
-    Analyzer::Initialize(); 
+    Analyzer::Initialize();
     }
 
 // ----------------------------------ECATAnalyzer AnalyzePacket------------------------------------
@@ -48,9 +48,9 @@ void ECATAnalyzer::Initialize()
 //      - len:                   Length of data passed to analyzer
 //      - data:                  Data to be analyzed
 //      - packet:                Packet information from parent analyzer(ie. Ethernet analyzer)
-// Protocol Parsing:    
+// Protocol Parsing:
 //      Parses data according to pack
-//      
+//
 // ------------------------------------------------------------------------------------------------
 bool ECATAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet)
     {
@@ -89,7 +89,7 @@ bool ECATAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet
                 switch( ec_datagram[datagram_cnt].cmd )
                     {
                     case ecat_datagram_none:
-                        data_count = GetSlaveOffsetAddr(data_count, data, datagram_cnt);                    
+                        data_count = GetSlaveOffsetAddr(data_count, data, datagram_cnt);
                         data_count = GetLengthLastInd(data_count, data, datagram_cnt);
 
                         break;
@@ -105,9 +105,9 @@ bool ECATAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet
                     case ecat_datagram_brw:
                     case ecat_datagram_armw:
                     case ecat_datagram_frmw:
-                        data_count = GetSlaveOffsetAddr(data_count, data, datagram_cnt);                    
+                        data_count = GetSlaveOffsetAddr(data_count, data, datagram_cnt);
                         data_count = GetLengthLastInd(data_count, data, datagram_cnt);
-                        data_count = OffsetAddressParse(data_count, ec_datagram[datagram_cnt].data, datagram_cnt, 
+                        data_count = OffsetAddressParse(data_count, ec_datagram[datagram_cnt].data, datagram_cnt,
                                                         ec_datagram[datagram_cnt].off_addr, ec_datagram[datagram_cnt].length);
                         break;
 
@@ -134,15 +134,15 @@ bool ECATAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet
 
 
                 // Set event bassed off of address or offset address. Will possibly change this to datagram type
-                // logs in future. Doing datagram type logs will allow for further depth of parsing capabilities. 
-                if( ec_datagram[datagram_cnt].address[0] != 0xff && 
+                // logs in future. Doing datagram type logs will allow for further depth of parsing capabilities.
+                if( ec_datagram[datagram_cnt].address[0] != 0xff &&
                     ec_datagram[datagram_cnt].address[2] != 0xff )
                     {
                     // make sure event exists in script land
                     if( ecat_log_address )
                         {
-                        event_mgr.Enqueue(ecat_log_address, ToEthAddrStr(src), ToEthAddrStr(dst), val_mgr->Count(length), 
-                                          val_mgr->Count(cmd), HexToString(ec_datagram[datagram_cnt].address,4), 
+                        event_mgr.Enqueue(ecat_log_address, ToEthAddrStr(src), ToEthAddrStr(dst), val_mgr->Count(length),
+                                          val_mgr->Count(cmd), HexToString(ec_datagram[datagram_cnt].address,4),
                                           HexToString(ec_datagram[datagram_cnt].data, ec_datagram[datagram_cnt].length));
                         }
                     }
@@ -152,7 +152,7 @@ bool ECATAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet
                     if( ecat_registers )
                         {
                         event_mgr.Enqueue(ecat_registers, ToEthAddrStr(src), ToEthAddrStr(dst), val_mgr->Count(slv),
-                                          val_mgr->Count(off_type), val_mgr->Count(off_addr), val_mgr->Count(cmd), 
+                                          val_mgr->Count(off_type), val_mgr->Count(off_addr), val_mgr->Count(cmd),
                                           HexToString(ec_datagram[datagram_cnt].data, ec_datagram[datagram_cnt].length));
                         }
                     }
@@ -174,10 +174,10 @@ bool ECATAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet
 //      - datagram_pos:          Position in ecdatagram array
 // Return:
 //      Returns position in data array
-// Protocol Parsing:    
+// Protocol Parsing:
 //      Parses data according to pack
 //
-//      Ethercat length and Last indicator sent in 2 bytes 
+//      Ethercat length and Last indicator sent in 2 bytes
 //      length bits      .... .000 0000 0000
 //      Reserved         ..00 0... .... ....
 //      Round Trip       .0.. .... .... ....
@@ -212,7 +212,7 @@ uint16_t ECATAnalyzer::GetLengthLastInd(uint16_t counter, const uint8_t* data, u
 //      - datagram_pos:          Position in ecdatagram array
 // Return:
 //      - counter:               Returns position in data array
-// Protocol Parsing:    
+// Protocol Parsing:
 //      Parses data according to pack
 // ----------------------------------------------------------------------------------
 uint16_t ECATAnalyzer::GetSlaveOffsetAddr(uint16_t counter, const uint8_t* data, uint16_t datagram_pos)
@@ -236,10 +236,10 @@ uint16_t ECATAnalyzer::GetSlaveOffsetAddr(uint16_t counter, const uint8_t* data,
 //      - length                 Data length containing register values to be rd/wr
 // Return:
 //      - counter:               Returns position in data array
-// Protocol Parsing:    
+// Protocol Parsing:
 //      Parses data according to register information in Ecat pdf document
 // ----------------------------------------------------------------------------------
-uint16_t ECATAnalyzer::OffsetAddressParse(uint16_t counter, const uint8_t* data, uint16_t datagram_pos, 
+uint16_t ECATAnalyzer::OffsetAddressParse(uint16_t counter, const uint8_t* data, uint16_t datagram_pos,
                                           uint16_t offsetaddress, uint16_t length)
     {
 
@@ -270,162 +270,162 @@ uint16_t ECATAnalyzer::OffsetAddressParse(uint16_t counter, const uint8_t* data,
 
         if( ecat_device)
             {
-            event_mgr.Enqueue(ecat_device, val_mgr->Count(slv), val_mgr->Count(revision), val_mgr->Count(type), 
-                          val_mgr->Count(build), val_mgr->Count(fmmu_cnt), val_mgr->Count(sm_cnt), 
+            event_mgr.Enqueue(ecat_device, val_mgr->Count(slv), val_mgr->Count(revision), val_mgr->Count(type),
+                          val_mgr->Count(build), val_mgr->Count(fmmu_cnt), val_mgr->Count(sm_cnt),
                           val_mgr->Count(ports), val_mgr->Count(dpram), val_mgr->Count(features));
             }
         }
 
     if( offsetaddress >= revision && offsetaddress < build )
         ec_datagram[datagram_pos].off_addr_name = revision;
-    
+
     if( offsetaddress >= build && offsetaddress < fmmuspt )
         ec_datagram[datagram_pos].off_addr_name = build;
-    
+
     if( offsetaddress >= fmmuspt && offsetaddress < sync_managers )
         ec_datagram[datagram_pos].off_addr_name = fmmuspt;
-    
+
     if( offsetaddress >= sync_managers && offsetaddress < ram_size )
         ec_datagram[datagram_pos].off_addr_name = sync_managers;
-    
+
     if( offsetaddress >= ram_size && offsetaddress < port_descriptor )
         ec_datagram[datagram_pos].off_addr_name = ram_size;
-    
+
     if( offsetaddress >= port_descriptor && offsetaddress < esc_features )
         ec_datagram[datagram_pos].off_addr_name = port_descriptor;
-    
+
     if( offsetaddress >= esc_features && offsetaddress < cs_addr )
         ec_datagram[datagram_pos].off_addr_name = esc_features;
-    
+
     if( offsetaddress >= cs_addr && offsetaddress < cs_alias )
         ec_datagram[datagram_pos].off_addr_name = cs_addr;
-    
+
     if( offsetaddress >= cs_alias && offsetaddress < reg_write_en )
         ec_datagram[datagram_pos].off_addr_name = cs_alias;
-    
+
     if( offsetaddress >= reg_write_en && offsetaddress < reg_write_prot )
         ec_datagram[datagram_pos].off_addr_name = reg_write_en;
-    
+
     if( offsetaddress >= reg_write_prot && offsetaddress < esc_write_en )
         ec_datagram[datagram_pos].off_addr_name = reg_write_prot;
-    
+
     if( offsetaddress >= esc_write_en && offsetaddress < reg_write_prot )
         ec_datagram[datagram_pos].off_addr_name = esc_write_en;
-    
+
     if( offsetaddress >= reg_write_prot && offsetaddress < esc_rst_ecat )
         ec_datagram[datagram_pos].off_addr_name = reg_write_prot;
-    
+
     if( offsetaddress >= esc_rst_ecat && offsetaddress < esc_rst_pdi )
         ec_datagram[datagram_pos].off_addr_name = esc_rst_ecat;
-    
+
     if( offsetaddress >= esc_rst_pdi && offsetaddress < esc_dl_ctl )
         ec_datagram[datagram_pos].off_addr_name = esc_rst_pdi;
 
     if( offsetaddress >= esc_dl_ctl && offsetaddress < phy_rd_wr_offs )
         ec_datagram[datagram_pos].off_addr_name = esc_dl_ctl;
-    
+
     if( offsetaddress >= phy_rd_wr_offs && offsetaddress < esc_dl_stat )
         ec_datagram[datagram_pos].off_addr_name = phy_rd_wr_offs;
-    
+
     if( offsetaddress >= esc_dl_stat && offsetaddress < al_ctrl )
         ec_datagram[datagram_pos].off_addr_name = esc_dl_stat;
-    
+
     if( offsetaddress >= al_ctrl && offsetaddress < al_stat )
         ec_datagram[datagram_pos].off_addr_name = al_ctrl;
-    
+
     if( offsetaddress >= al_stat && offsetaddress < al_stat_code )
         ec_datagram[datagram_pos].off_addr_name = al_stat;
-    
+
     if( offsetaddress >= al_stat_code && offsetaddress < run_led_ovrd )
         ec_datagram[datagram_pos].off_addr_name = al_stat_code;
-    
+
     if( offsetaddress >= run_led_ovrd && offsetaddress < err_led_ovrd )
         ec_datagram[datagram_pos].off_addr_name = run_led_ovrd;
-    
+
     if( offsetaddress >= err_led_ovrd && offsetaddress < pdi_ctrl )
         ec_datagram[datagram_pos].off_addr_name = err_led_ovrd;
-    
+
     if( offsetaddress >= pdi_ctrl && offsetaddress < esc_conf )
         ec_datagram[datagram_pos].off_addr_name = pdi_ctrl;
-    
+
     if( offsetaddress >= esc_conf && offsetaddress < pdi_info )
         ec_datagram[datagram_pos].off_addr_name = esc_conf;
-    
+
     if( offsetaddress >= pdi_info && offsetaddress < pdi_conf )
         ec_datagram[datagram_pos].off_addr_name = pdi_info;
-    
+
     if( offsetaddress >= pdi_conf && offsetaddress < pdi_onchip_conf )
         ec_datagram[datagram_pos].off_addr_name = pdi_conf;
 
     if( offsetaddress >= pdi_onchip_conf && offsetaddress < sync_latc_pdi )
         ec_datagram[datagram_pos].off_addr_name = pdi_onchip_conf;
-    
+
     if( offsetaddress >= sync_latc_pdi && offsetaddress < ecat_ev_msk )
         ec_datagram[datagram_pos].off_addr_name = sync_latc_pdi;
-    
+
     if( offsetaddress >= ecat_ev_msk && offsetaddress < pdi_al_ev_msk )
         ec_datagram[datagram_pos].off_addr_name = ecat_ev_msk;
-    
+
     if( offsetaddress >= pdi_al_ev_msk && offsetaddress < ecat_ev_req )
         ec_datagram[datagram_pos].off_addr_name = pdi_al_ev_msk;
-    
+
     if( offsetaddress >= ecat_ev_req && offsetaddress < al_ev_req )
         ec_datagram[datagram_pos].off_addr_name = ecat_ev_req;
-    
+
     if( offsetaddress >= al_ev_req && offsetaddress < rx_err_cnt )
         ec_datagram[datagram_pos].off_addr_name = al_ev_req;
-    
+
     if( offsetaddress >= rx_err_cnt && offsetaddress < fwd_rx_err_cnt )
         ec_datagram[datagram_pos].off_addr_name = rx_err_cnt;
-    
+
     if( offsetaddress >= fwd_rx_err_cnt && offsetaddress < ecat_proc_err_cnt )
         ec_datagram[datagram_pos].off_addr_name = fwd_rx_err_cnt;
-    
+
     if( offsetaddress >= ecat_proc_err_cnt && offsetaddress < pdi_err_cnt )
         ec_datagram[datagram_pos].off_addr_name = ecat_proc_err_cnt;
-    
+
     if( offsetaddress >= pdi_err_cnt && offsetaddress < pdi_err_code )
         ec_datagram[datagram_pos].off_addr_name = pdi_err_cnt;
-    
+
     if( offsetaddress >= pdi_err_code && offsetaddress < llc )
         ec_datagram[datagram_pos].off_addr_name = pdi_err_code;
-    
+
     if( offsetaddress >= llc && offsetaddress < wtd_div )
         ec_datagram[datagram_pos].off_addr_name = llc;
-    
+
     if( offsetaddress >= wtd_div && offsetaddress < wtd_time_pdi )
         ec_datagram[datagram_pos].off_addr_name = wtd_div;
-    
+
     if( offsetaddress >= wtd_time_pdi && offsetaddress < wtd_time_proc_data )
         ec_datagram[datagram_pos].off_addr_name = wtd_time_pdi;
-    
+
     if( offsetaddress >= wtd_time_proc_data && offsetaddress < wtd_stat_proc_data )
         ec_datagram[datagram_pos].off_addr_name = wtd_time_proc_data;
-    
+
     if( offsetaddress >= wtd_stat_proc_data && offsetaddress < wtd_cnt_proc_data )
         ec_datagram[datagram_pos].off_addr_name = wtd_stat_proc_data;
-    
+
     if( offsetaddress >= wtd_cnt_proc_data && offsetaddress < wtd_cnt_pdi )
         ec_datagram[datagram_pos].off_addr_name = wtd_cnt_proc_data;
-    
+
     if( offsetaddress >= wtd_cnt_pdi && offsetaddress < sii_eeprom_intr )
         ec_datagram[datagram_pos].off_addr_name = wtd_cnt_pdi;
-    
+
     if( offsetaddress >= sii_eeprom_intr && offsetaddress < mii_mang_intr )
         ec_datagram[datagram_pos].off_addr_name = sii_eeprom_intr;
-    
+
     if( offsetaddress >= mii_mang_intr && offsetaddress < fmmu )
         ec_datagram[datagram_pos].off_addr_name = mii_mang_intr;
-    
+
     if( offsetaddress >= fmmu && offsetaddress < sync_manager )
         ec_datagram[datagram_pos].off_addr_name = fmmu;
-    
+
     if( offsetaddress >= sync_manager && offsetaddress < dist_clk )
         ec_datagram[datagram_pos].off_addr_name = sync_manager;
-    
+
     if( offsetaddress >= dist_clk && offsetaddress < esc_specf_reg )
         ec_datagram[datagram_pos].off_addr_name = dist_clk;
-    
+
     if( offsetaddress >= esc_specf_reg && offsetaddress < dig_io_data )
         ec_datagram[datagram_pos].off_addr_name = esc_specf_reg;
 
@@ -440,7 +440,7 @@ uint16_t ECATAnalyzer::OffsetAddressParse(uint16_t counter, const uint8_t* data,
 
     if( offsetaddress >= usr_ram && offsetaddress < pd_ram )
         ec_datagram[datagram_pos].off_addr_name = usr_ram;
-   
+
     if( offsetaddress >= pd_ram )
         {
         int temp = 0;
@@ -448,14 +448,14 @@ uint16_t ECATAnalyzer::OffsetAddressParse(uint16_t counter, const uint8_t* data,
 
         ec_mailbox.header.length = (data[1] << 8) + data[0];
 
-        if( (ec_datagram[datagram_pos].length > 1) && 
+        if( (ec_datagram[datagram_pos].length > 1) &&
             (ec_mailbox.header.length > 0) )
             {
             ec_mailbox.header.address = (data[3] << 8) + data[2];
             ec_mailbox.header.priority = data[4] & 0x03;
             ec_mailbox.header.type = data[5] & 0x0F;
             ec_mailbox.header.counter = (data[5] & 0xF0) >> 4;
-            
+
             EcatMailboxParse(ec_mailbox.header.length+6, data, 6);
 
             }
@@ -474,8 +474,8 @@ uint16_t ECATAnalyzer::OffsetAddressParse(uint16_t counter, const uint8_t* data,
 //      - offsetaddress:         Register address being accessed
 // Return:
 //      - void
-// Protocol Parsing:    
-//      Parses data according to ec_mailbox header type 
+// Protocol Parsing:
+//      Parses data according to ec_mailbox header type
 // ----------------------------------------------------------------------------------
 void ECATAnalyzer::EcatMailboxParse(uint16_t length, const uint8_t* data, uint16_t position)
     {
@@ -487,7 +487,7 @@ void ECATAnalyzer::EcatMailboxParse(uint16_t length, const uint8_t* data, uint16
             // NOP
         }
 
-    // ADS over EtherCAT 
+    // ADS over EtherCAT
     if( ec_mailbox.header.type ==  ecat_mbx_aoe )
         {
         for( i = 5; i >= 0; i-- )
@@ -514,20 +514,20 @@ void ECATAnalyzer::EcatMailboxParse(uint16_t length, const uint8_t* data, uint16
         ec_mailbox.aoe.stateflags = (data[position + 1] << 8) + data[position];
         position += 2;
 
-        ec_mailbox.aoe.cbdata = (data[position + 3] << 24) + (data[position+2] << 16) + 
+        ec_mailbox.aoe.cbdata = (data[position + 3] << 24) + (data[position+2] << 16) +
                                 (data[position + 1] << 8) + data[position];
         position += 4;
 
-        ec_mailbox.aoe.errorcode = (data[position + 3] << 24) + (data[position + 2] << 16) + 
+        ec_mailbox.aoe.errorcode = (data[position + 3] << 24) + (data[position + 2] << 16) +
                                    (data[position + 1] << 8) + data[position];
         position += 4;
 
-        ec_mailbox.aoe.invokeid = (data[position + 3] << 24) + (data[position + 2] << 16) + 
+        ec_mailbox.aoe.invokeid = (data[position + 3] << 24) + (data[position + 2] << 16) +
                                   (data[position + 1] << 8) + data[position];
         position += 4;
 
         memcpy(ec_mailbox.aoe.req_res, data+position, (length - position));
- 
+
         auto t_port = ec_mailbox.aoe.targetport;
         auto s_port = ec_mailbox.aoe.senderport;
         auto cmmd = ec_mailbox.aoe.cmd;
@@ -537,22 +537,22 @@ void ECATAnalyzer::EcatMailboxParse(uint16_t length, const uint8_t* data, uint16
         if( ecat_AoE )
             {
             // Set AoE event to log to AOE log
-            event_mgr.Enqueue(ecat_AoE, ToEthAddrStr(ec_mailbox.aoe.targetid), ToEthAddrStr(ec_mailbox.aoe.senderid), 
-                          val_mgr->Count(t_port), val_mgr->Count(s_port), val_mgr->Count(cmmd), 
+            event_mgr.Enqueue(ecat_AoE, ToEthAddrStr(ec_mailbox.aoe.targetid), ToEthAddrStr(ec_mailbox.aoe.senderid),
+                          val_mgr->Count(t_port), val_mgr->Count(s_port), val_mgr->Count(cmmd),
                           val_mgr->Count(stateflags), HexToString(ec_mailbox.aoe.req_res, (length - position)));
             }
         }
 
-    
+
     // Ethernet over Ethercat
     if( ec_mailbox.header.type == ecat_mbx_eoe )
         {
         Packet tmppacket;
 
         uint32_t protocol = (data[position + 16] << 8) + data[position + 17];
-        
+
         tmppacket.eth_type = protocol;
-        tmppacket.l2_dst = data + (position + 4);  //(Position + 4) is to skip over 4byte ecat EoE header 
+        tmppacket.l2_dst = data + (position + 4);  //(Position + 4) is to skip over 4byte ecat EoE header
         tmppacket.l2_src = data + (position + 10);
         tmppacket.len = length - (position + 4);
         tmppacket.data = data + (position + 4);
@@ -576,7 +576,7 @@ void ECATAnalyzer::EcatMailboxParse(uint16_t length, const uint8_t* data, uint16
         ec_mailbox.coe.index = (data[position + 1] << 8) + data[position];
         position += 2;
         ec_mailbox.coe.subindex = data[position++];
-        ec_mailbox.coe.data_offset = (data[position + 3] << 24) + (data[position + 2] << 16) + 
+        ec_mailbox.coe.data_offset = (data[position + 3] << 24) + (data[position + 2] << 16) +
                                      (data[position + 1] << 8) + data[position];
         position += 4;
 
@@ -592,25 +592,25 @@ void ECATAnalyzer::EcatMailboxParse(uint16_t length, const uint8_t* data, uint16
         if( ecat_CoE)
             {
             // set CoE event to log to COE log file
-            event_mgr.Enqueue(ecat_CoE, val_mgr->Count(number), val_mgr->Count(type), val_mgr->Count(req_resp), 
+            event_mgr.Enqueue(ecat_CoE, val_mgr->Count(number), val_mgr->Count(type), val_mgr->Count(req_resp),
                               val_mgr->Count(index), val_mgr->Count(subindex), val_mgr->Count(data_offset));
             }
         }
 
-    //File-Access over EtherCAT 
+    //File-Access over EtherCAT
     if( ec_mailbox.header.type == ecat_mbx_foe )
         {
         ec_mailbox.foe.opCode = data[position++];
         ec_mailbox.foe.reserved = data[position++];
-        ec_mailbox.foe.password = (data[position + 3] << 24) + (data[position + 2] << 16) + 
+        ec_mailbox.foe.password = (data[position + 3] << 24) + (data[position + 2] << 16) +
                                   (data[position + 1] << 8) + data[position];
         position += 4;
 
-        ec_mailbox.foe.packet_num = (data[position + 3] << 24) + (data[position + 2] << 16) + 
+        ec_mailbox.foe.packet_num = (data[position + 3] << 24) + (data[position + 2] << 16) +
                                     (data[position + 1] << 8) + data[position];
         position += 4;
 
-        ec_mailbox.foe.error_code = (data[position + 3] << 24) + (data[position + 2] << 16) + 
+        ec_mailbox.foe.error_code = (data[position + 3] << 24) + (data[position + 2] << 16) +
                                     (data[position + 1] << 8) + data[position];
         position += 4;
 
@@ -641,12 +641,12 @@ void ECATAnalyzer::EcatMailboxParse(uint16_t length, const uint8_t* data, uint16
         if( ecat_FoE )
             {
             // set FoE event to log to FOE log file
-            event_mgr.Enqueue(ecat_FoE, val_mgr->Count(opCode), val_mgr->Count(reserved), val_mgr->Count(packet_num), 
-                              val_mgr->Count(error_code), HexToString(ec_mailbox.foe.filename, max_foe_data), 
+            event_mgr.Enqueue(ecat_FoE, val_mgr->Count(opCode), val_mgr->Count(reserved), val_mgr->Count(packet_num),
+                              val_mgr->Count(error_code), HexToString(ec_mailbox.foe.filename, max_foe_data),
                               HexToString(ec_mailbox.foe.data, max_foe_data));
             }
         }
-    
+
     //Servo-Profile over EtherCAT
     if( ec_mailbox.header.type == ecat_mbx_soe )
         {
@@ -670,10 +670,10 @@ void ECATAnalyzer::EcatMailboxParse(uint16_t length, const uint8_t* data, uint16
         if( ecat_SoE )
             {
             // set SoE event to log to SOE log file
-            event_mgr.Enqueue(ecat_SoE, val_mgr->Count(opCode), val_mgr->Count(incomplete), val_mgr->Count(error), 
+            event_mgr.Enqueue(ecat_SoE, val_mgr->Count(opCode), val_mgr->Count(incomplete), val_mgr->Count(error),
                               val_mgr->Count(drive_num), val_mgr->Count(element_flags), val_mgr->Count(index));
             }
-        
+
         }
     }
 
@@ -713,9 +713,9 @@ zeek::StringValPtr ECATAnalyzer::HexToString(const u_char* data, uint16_t len)
 
             count += 2;
             }
-        
+
         buf[count] = 0x00;
         return zeek::make_intrusive<zeek::StringVal>(buf);
-        } 
+        }
     return NULL;
     }
