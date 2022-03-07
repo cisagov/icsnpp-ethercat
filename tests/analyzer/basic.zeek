@@ -9,4 +9,4 @@
 #
 # @TEST-DOC: Test ECAT analyzer with small trace.
 
-@load icsnpp/ecat
+@load icsnpp/ethercat
