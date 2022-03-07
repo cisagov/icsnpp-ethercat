@@ -41,8 +41,8 @@ If you have ZKG configured to load packages (see @load packages in quickstart gu
 If you are not using site/local.zeek or another site installation of Zeek and just want to run this package on a packet capture you can add `icsnpp/ethercat` to your command to run this plugin's scripts on the packet capture:
 
 ```bash
-git clone https://github.com/cisagov/icsnpp-bacnet.git
-zeek -Cr ethercat-bacnet/examples/ethercat_example.pcap icsnpp/ethercat
+git clone https://github.com/cisagov/icsnpp-ethercat.git
+zeek -Cr icsnpp-ethercat/tests/traces/ethercat_example.pcap icsnpp/ethercat
 ```
 
 
@@ -73,7 +73,7 @@ To run this plugin in a site deployment you will need to add the line @load icsn
 If you are not using site/local.zeek or another site installation of Zeek and just want to run this package on a packet capture you can add icsnpp/ethercat to your command to run this plugin's scripts on the packet capture:
 
 ```bash
-zeek -Cr icsnpp-ethercat/examples/ethercat_example.pcap icsnpp/ethercat
+zeek -Cr icsnpp-ethercat/tests/traces/ethercat_example.pcap icsnpp/ethercat
 ```
 If you want to deploy this plugin on an already existing Zeek implementation and you don't want to build the plugin on the machine, you can extract the ICSNPP_ETHERCAT.tgz file to the directory of the established ZEEK_PLUGIN_PATH (default is ${ZEEK_INSTALLATION_DIR}/lib/zeek/plugins/).
 
