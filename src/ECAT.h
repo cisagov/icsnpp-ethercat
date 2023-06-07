@@ -10,6 +10,12 @@
 
 #pragma once
 
+#if __has_include(<zeek/zeek-version.h>)
+#include <zeek/zeek-version.h>
+#else
+#include <zeek/zeek-config.h>
+#endif
+
 #include "zeek/packet_analysis/Analyzer.h"
 #include "zeek/packet_analysis/Component.h"
 #include <sys/socket.h>
