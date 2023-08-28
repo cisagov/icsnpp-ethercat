@@ -6,9 +6,9 @@ Industrial Control Systems Network Protocol Parsers (ICSNPP) - Ethercat.
 
 ICSNPP-Ethercat is a Zeek plugin for parsing and logging fields within the Ethercat protocol.
 
-This plugin was developed to be fully customizable, so if you would like to drill down into specific Ethercat packets and log certain variables, add the logging functionality to [scripts/icsnpp/ethercat/main.zeek](scripts/icsnpp/ethercat/main.zeek). The functions within [scripts/icsnpp/ethercat/main.zeek](scripts/icsnpp/ethercat/main.zeek) and [src/events.bif](src/events.bif) should prove to be a good guide on how to add new logging functionality.
+This plugin was developed to be fully customizable. To drill down into specific Ethercat packets and log certain variables, users can add the logging functionality to [scripts/icsnpp/ethercat/main.zeek](scripts/icsnpp/ethercat/main.zeek). The functions within [scripts/icsnpp/ethercat/main.zeek](scripts/icsnpp/ethercat/main.zeek) and [src/events.bif](src/events.bif) are good guides for adding new logging functionality.
 
-This parser produces 8 log files. These log files are defined in [scripts/icsnpp/ethercat/main.zeek](scripts/icsnpp/ethercat/main.zeek).
+This parser produces eight log files. These log files are defined in [scripts/icsnpp/ethercat/main.zeek](scripts/icsnpp/ethercat/main.zeek).
 * ecat_registers.log
 * ecat_log_address.log
 * ecat_dev_info.log 
@@ -33,12 +33,12 @@ zkg refresh
 zkg install icsnpp-ethercat
 ```
 
-If this package is installed from ZKG it will be added to the available plugins. This can be tested by running `zeek -N`. If installed correctly you will see `ICSNPP::ETHERCAT`.
+If this package is installed from ZKG, it will be added to the available plugins. This can be tested by running `zeek -N`. If installed correctly, users will see `ICSNPP::ETHERCAT`.
 
-If you have ZKG configured to load packages (see @load packages in quickstart guide), this plugin and scripts will automatically be loaded and ready to go.
+If ZKG is configured to load packages (see @load packages in quickstart guide), this plugin and these scripts will automatically be loaded and ready to go.
 [ZKG Quickstart Guide](https://docs.zeek.org/projects/package-manager/en/stable/quickstart.html)
 
-If you are not using site/local.zeek or another site installation of Zeek and just want to run this package on a packet capture you can add `icsnpp/ethercat` to your command to run this plugin's scripts on the packet capture:
+If users are not using site/local.zeek or another site installation of Zeek and want to run this package on a packet capture, they can add `icsnpp/ethercat` to the command to run this plugin's scripts on the packet capture:
 
 ```bash
 git clone https://github.com/cisagov/icsnpp-ethercat.git
@@ -55,27 +55,27 @@ cd icsnpp-ethercat/
 ./configure
 make
 ```
-If these commands succeed, you will end up with a newly created build directory which contains all the files needed to run/test this plugin. The easiest way to test the parser is to point the ZEEK_PLUGIN_PATH environment variable to this build directory.
+If these commands succeed, users will end up with a newly created build directory that contains all the files needed to run/test this plugin. The easiest way to test the parser is to point the ZEEK_PLUGIN_PATH environment variable to this build directory.
 
 ```bash
 export ZEEK_PLUGIN_PATH=$PWD/build/
 zeek -N # Ensure everything compiled correctly and you are able to see ICSNPP::ETHERCAT
 ```
-Once you have tested the functionality locally and it appears to have compiled correctly, you can install it system-wide:
+Once users have tested the functionality locally and it appears to have compiled correctly, they can install it system-wide:
 
 ```bash
 sudo make install
 unset ZEEK_PLUGIN_PATH
 zeek -N # Ensure everything installed correctly and you are able to see ICSNPP::ETHERCAT
 ```
-To run this plugin in a site deployment you will need to add the line @load icsnpp/ethercat to your site/local.zeek file in order to load this plugin's scripts.
+To run this plugin in a site deployment, users will need to add the line @load icsnpp/ethercat to the site/local.zeek file to load this plugin's scripts.
 
-If you are not using site/local.zeek or another site installation of Zeek and just want to run this package on a packet capture you can add icsnpp/ethercat to your command to run this plugin's scripts on the packet capture:
+If users are not using site/local.zeek or another site installation of Zeek and want to run this package on a packet capture, they can add icsnpp/ethercat to the command to run this plugin's scripts on the packet capture:
 
 ```bash
 zeek -Cr icsnpp-ethercat/tests/traces/ethercat_example.pcap icsnpp/ethercat
 ```
-If you want to deploy this plugin on an already existing Zeek implementation and you don't want to build the plugin on the machine, you can extract the ICSNPP_ETHERCAT.tgz file to the directory of the established ZEEK_PLUGIN_PATH (default is ${ZEEK_INSTALLATION_DIR}/lib/zeek/plugins/).
+If users want to deploy this plugin on an already existing Zeek implementation and don't want to build the plugin on the machine, they can extract the ICSNPP_ETHERCAT.tgz file to the directory of the established ZEEK_PLUGIN_PATH (default is ${ZEEK_INSTALLATION_DIR}/lib/zeek/plugins/).
 
 ```bash
 tar xvzf build/ICSNPP_Ethercat.tgz -C $ZEEK_PLUGIN_PATH 
@@ -88,19 +88,19 @@ tar xvzf build/ICSNPP_Ethercat.tgz -C $ZEEK_PLUGIN_PATH
 
 This log captures register memory address read and writes **ecat_registers.log**.
 
-This log is also the catch all. Before it gets to this point it is sent through the more parsing routines to pull out any other information. ie. CoE, AoE, FoE, EoE, and SoE mailbox data. 
+This log is also the catch all. Before it gets to this point it is sent through more parsing routines to pull out any other information (i.e., CoE, AoE, FoE, EoE, and SoE mailbox data). 
 
 #### Fields Captured
 
 | Field             | Type      | Description                                               |
 | ----------------- |-----------|-----------------------------------------------------------| 
 | ts                | time      | Timestamp                                                 |
-| srcmac            | string    | Source Mac Address                                        |
-| dstmac            | string    | Destination Mac Address                                   |
-| Command           | string    | Ethercat Command                                          |
-| Slave_Addr        | string    | Ethercat Slave Address                                    |
-| Register_Type     | string    | Register Information                                      |
-| Register_Addr     | string    | Memory Address being accessed                             |
+| srcmac            | string    | Source MAC address                                        |
+| dstmac            | string    | Destination MAC address                                   |
+| Command           | string    | EtherCAT command                                          |
+| Slave_Addr        | string    | EtherCAT slave address                                    |
+| Register_Type     | string    | Register information                                      |
+| Register_Addr     | string    | Memory address being accessed                             |
 | data              | string    | Data to be read or wrote to memory address                |
 
 
@@ -115,11 +115,11 @@ This log captures Logical Read and writes to addresses and logs them to **ecat_l
 | Field             | Type      | Description                                               |
 | ----------------- |-----------|-----------------------------------------------------------| 
 | ts                | time      | Timestamp                                                 |
-| srcmac            | string    | Source Mac Address                                        |
-| dstmac            | string    | Destination Mac Address                                   |
+| srcmac            | string    | Source MAC address                                        |
+| dstmac            | string    | Destination MAC address                                   |
 | Log_Addr          | string    | Address data is being accessed from                       |
 | Length            | count     | Length of data                                            |
-| Command           | string    | Ethercat Command                                          |
+| Command           | string    | EtherCAT command                                          |
 | data              | string    | Data read or write                                        |
 
 ### ECAT Device Info (ecat_dev_info.log)
@@ -133,13 +133,13 @@ This log captures ECAT Device info and logs it to **ecat_dev_info.log**.
 | Field             | Type      | Description                                               |
 | ----------------- |-----------|-----------------------------------------------------------| 
 | ts                | time      | Timestamp                                                 |
-| slave_id          | string    | Ethercat Slave Address                                    |
+| slave_id          | string    | Ethercat slave address                                    |
 | revision          | string    | Revision of EtherCAT controller 					        |
 | dev_type          | string    | Type of EtherCAT controller                               |
 | build             | string    | Build version                                             |
-| fmmucnt           | string    | Fieldbus Memory Management Unit supported channel count   |
-| smcount           | string    | Sync Manager count                                        |
-| ports             | string    | Port Descriptor                                           |
+| fmmucnt           | string    | Fieldbus memory management unit supported channel count   |
+| smcount           | string    | Sync manager count                                        |
+| ports             | string    | Port descriptor                                           |
 | dpram             | string    | Ram size                                                  |
 | features          | string    | Features supported                                        |
 
@@ -155,13 +155,13 @@ and logs it to **ecat_aoe_info.log**.
 | Field             | Type      | Description                                               |
 | ----------------- |-----------|-----------------------------------------------------------| 
 | ts                | time      | Timestamp                                                 |
-| targetid          | string    | Target Network ID                                         |
-| targetport        | string    | Target Port                                               |
-| senderid          | string    | Sender Network ID                                         |
-| senderport        | string    | Sender Port                                               |
+| targetid          | string    | Target network ID                                         |
+| targetport        | string    | Target port                                               |
+| senderid          | string    | Sender network ID                                         |
+| senderport        | string    | Sender port                                               |
 | cmd               | string    | Command                                                   |
-| stateflags        | string    | State Flags                                               |
-| data              | string    | Command Data                                              |
+| stateflags        | string    | State flags                                               |
+| data              | string    | Command data                                              |
 
 ### ECAT CoE Info (ecat_coe_info.log)
 
@@ -175,11 +175,11 @@ This log captures CoE (CAN over Ethercat) and logs it to **ecat_coe_info.log**.
 | ----------------- |-----------|-----------------------------------------------------------| 
 | ts                | time      | Timestamp                                                 |
 | number            | string    | Message number                                            |
-| Type              | string    | Message Type                                              |
-| req_resp          | string    | Request or Response type                                  |
+| Type              | string    | Message type                                              |
+| req_resp          | string    | Request or response type                                  |
 | index             | string    | Index                                                     |
-| subindex          | string    | Sub Index                                                 |
-| dataoffset        | string    | Data Offset                                               |
+| subindex          | string    | Sub index                                                 |
+| dataoffset        | string    | Data offset                                               |
 
 ### ECAT FoE Info (ecat_foe_info.log)
 
@@ -192,12 +192,12 @@ This log captures FoE (File Over Ethercat) information and logs it to **ecat_foe
 | Field             | Type      | Description                                               |
 | ----------------- |-----------|-----------------------------------------------------------| 
 | ts                | time      | Timestamp                                                 |
-| opCode            | string    | Operation Code                                            |
+| opCode            | string    | Operation code                                            |
 | reserved          | string    | Reserved                                                  |
 | packet_num        | string    | Packet number                                             |
-| error_code        | string    | Error Code                                                |
+| error_code        | string    | Error code                                                |
 | filename          | string    | Filename                                                  |
-| data              | string    | Transferred Data                                          |
+| data              | string    | Transferred data                                          |
 
 ### ECAT SoE Info (ecat_soe_info.log)
 
@@ -214,8 +214,8 @@ This log captures SoE (Servo over Ethercat) and logs it to **ecat_soe_info.log**
 | incomplete        | string    | Function check to determine if it has been processed      |
 | error             | string    | Error message                                             |
 | drive_num         | string    | Drive number for command                                  |
-| element_flags     | string    | Element Flags                                             |
-| index             | string    | Message Index                                             |
+| element_flags     | string    | Element flags                                             |
+| index             | string    | Message index                                             |
 
 ### ECAT ARP Info (ecat_arp_info.log)
 
@@ -229,9 +229,9 @@ and logs it to **ecat_arp_info.log**.
 | Field             | Type      | Description                                               |
 | ----------------- |-----------|-----------------------------------------------------------| 
 | ts                | time      | Timestamp                                                 |
-| arp_type          | string    | Arp command                                               |
-| mac_src           | string    | Source Mac address                                        |
-| mac_dst           | string    | Destination Mac address                                   |
+| arp_type          | string    | ARP command                                               |
+| mac_src           | string    | Source MAC address                                        |
+| mac_dst           | string    | Destination MAC address                                   |
 | SPA               | addr      | Sender protocol address                                   |
 | SHA               | string    | Sender hardware address                                   |
 | TPA               | addr      | Target protocol address                                   |
@@ -268,7 +268,7 @@ Updates to Zeek ICS Protocol Parsers:
     * Modbus Zeek script extending logging capabilities of Zeek's default Modbus protocol parser
 
 ### Other Software
-Idaho National Laboratory is a cutting edge research facility which is a constantly producing high quality research and software. Feel free to take a look at our other software and scientific offerings at:
+Idaho National Laboratory is a national research facility with a focus on development of software and toolchains to improve the security of criticial infrastructure environments around the world. Please review our other software and scientific offerings at:
 
 [Primary Technology Offerings Page](https://www.inl.gov/inl-initiatives/technology-deployment)
 
@@ -282,9 +282,9 @@ Idaho National Laboratory is a cutting edge research facility which is a constan
 
 Copyright 2023 Battelle Energy Alliance, LLC
 
-Licensed under the 3-Part BSD (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+Licensed under the 3-Clause BSD License (the "License");
+this file cannot be used except in compliance with the License.
+A copy of the License can be obtained at:
 
   https://opensource.org/licenses/BSD-3-Clause
 
@@ -294,9 +294,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-
-
-
 Licensing
 -----
-This software is licensed under the terms you may find in the file named "LICENSE" in this directory.
+This software is licensed under the terms found in the file named "LICENSE" in this directory.
