@@ -1,4 +1,5 @@
 # @TEST-EXEC: zeek -C -r ${TRACES}/ethercat_example.pcap %INPUT
+# @TEST-EXEC: zeek-cut id.orig_h id.orig_p id.resp_h id.resp_p proto service < conn.log > conn.tmp && mv conn.tmp conn.log
 # @TEST-EXEC: btest-diff conn.log
 # @TEST-EXEC: btest-diff ecat_aoe_info.log
 # @TEST-EXEC: btest-diff ecat_arp_info.log
