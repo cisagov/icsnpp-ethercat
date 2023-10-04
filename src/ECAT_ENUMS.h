@@ -75,6 +75,7 @@ enum {
     pdi_ctrl                    = 0x0140, // PDI Control
     esc_conf                    = 0x0141, // ESC Configuration 
     pdi_info                    = 0x014E, // 2bytes PDI Information
+    // TODO: Check the next few values...
     pdi_conf                    = 0x0150, // 4 bytes PDI Configuration
     pdi_onchip_conf             = 0x0152, // 2 byte PDI On-chip bus extended configuration
     sync_latc_pdi               = 0x0151, // Bit [1:0] Sync/Latch[1:0] PDI Configuration
