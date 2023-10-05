@@ -536,13 +536,6 @@ bool ECATAnalyzer::parseEOE(uint8_t currentIndex)
     
     const uint8_t* mailboxStart = ec_datagram[currentIndex].data + MAILBOX_HEADER_SIZE;
     
-    /*printf("Data: \n");
-    for(size_t i = 0;  i < ec_mailbox.header.length; ++i)
-    {
-        printf("%02X", mailboxStart[i]);
-    }
-    printf("\n\n");*/
-    
     Packet tempPacket;
 
     // Really confused by these values...
@@ -570,7 +563,6 @@ bool ECATAnalyzer::parseCOE(uint8_t currentIndex)
     
     const uint8_t* mailboxStart = ec_datagram[currentIndex].data + MAILBOX_HEADER_SIZE;
 
-    printf("Raw Type: %02X, parsedType: %02X\n", mailboxStart[1], (mailboxStart[1] & 0xF0) >> 4);
     ec_mailbox.coe.number = mailboxStart[0];
     ec_mailbox.coe.type = (mailboxStart[1] & 0xF0) >> 4;
     ec_mailbox.coe.req_resp = mailboxStart[2];
@@ -578,11 +570,8 @@ bool ECATAnalyzer::parseCOE(uint8_t currentIndex)
     ec_mailbox.coe.subindex = mailboxStart[5];
     ec_mailbox.coe.data_offset = readLittleEndianInt(mailboxStart + 6);
     
-    printf("parsedType: %02X\n", ec_mailbox.coe.type);
-    
     if(ecat_CoE)
     {
-        printf("parsedType: %02X\n", ec_mailbox.coe.type);
         event_mgr.Enqueue(ecat_CoE,
                           val_mgr->Count(ec_mailbox.coe.number),
                           val_mgr->Count(ec_mailbox.coe.type),
