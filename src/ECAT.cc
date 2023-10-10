@@ -72,7 +72,7 @@ void inline setAddresses(uint8_t currentIndex, uint32_t addressValue, uint16_t s
 // Returns true if currentRegisterAddress <= offsetAddress < nextRegisterAddress
 bool inline inDesiredRegisterRange(uint16_t offsetAddress, uint16_t currentRegisterAddress, uint16_t nextRegisterAddress)
 {
-    return offsetAddress >= currentRegisterAddress && offsetAddress < nextRegisterAddress;
+    return (offsetAddress >= currentRegisterAddress) && (offsetAddress < nextRegisterAddress);
 }
 
 // ----------------------------------ECATAnalyzer AnalyzePacket------------------------------------
@@ -97,8 +97,8 @@ bool ECATAnalyzer::AnalyzePacket(size_t len, const uint8_t* data, Packet* packet
     // Verify we have enough data to extract a header
     if(!parseMessageHeader(data, len, messageLength, reservedBit, messageType))
     {
-    Weird("Short EtherCAT Packet", packet);
-    return false;
+        Weird("Short EtherCAT Packet", packet);
+        return false;
     }
     
     if(messageLength + HEADER_LENGTH > len)
@@ -888,43 +888,51 @@ uint16_t ECATAnalyzer::determineOffsetName(uint16_t offsetAddress)
 }
 
 zeek::AddrValPtr ECATAnalyzer::ToAddrVal(const void* addr)
-    {
+{
     //Note: We only handle IPv4 addresses.
     return zeek::make_intrusive<zeek::AddrVal>(*(const uint32_t*) addr);
-    }
+}
 
 zeek::StringValPtr ECATAnalyzer::ToEthAddrStr(const u_char* addr)
-    {
+{
     char buf[1024];
     snprintf(buf, sizeof(buf), "%02x:%02x:%02x:%02x:%02x:%02x",
              addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]);
     return zeek::make_intrusive<zeek::StringVal>(buf);
-    }
+}
 
 zeek::StringValPtr ECATAnalyzer::HexToString(const u_char* data, uint16_t len)
-    {
+{
     char buf[0x2000];
     int offset = 0;
     int count = 0;
     if( len)
-        {
+    {
         for(int i = 0; i < len; i++)
-            {
+        {
             if( ((data[i] & 0xF0) >> 4) > 0x09)
+            {
                 buf[count] = (((data[i] & 0xF0) >> 4) - 0x0A) + 0x41;
+            }
             else
+            {
                 buf[count] = ((data[i] & 0xF0) >> 4) + 0x30;
-
+            }
+            
             if( ((data[i] & 0x0F)) > 0x09)
+            {
                 buf[count+1] = ((data[i] & 0x0F) - 0x0A) + 0x41;
+            }
             else
+            {
                 buf[count+1] = (data[i] & 0x0F) + 0x30;
+            }
 
             count += 2;
-            }
+        }
 
         buf[count] = 0x00;
         return zeek::make_intrusive<zeek::StringVal>(buf);
-        }
-    return NULL;
     }
+    return NULL;
+}
