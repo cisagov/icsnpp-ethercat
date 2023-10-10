@@ -22,8 +22,21 @@
 #pragma once
 
 #include <net/if_arp.h>
-#define max_datagram_amount 15
-#define max_foe_data 512
+#define HEADER_LENGTH 2
+#define MAX_DATAGRAM_COUNT 15
+#define DATAGRAM_HEADER_LENGTH 10
+#define DATAGRAM_TRAILER_LENGTH 2
+#define MAX_DATA_SIZE 2047 // 16-bit field in the spec, but limited to 11 bits by the protocol itself...going with 11-bit size
+#define MAX_FOE_DATA_SIZE 512
+#define DEVICE_INFO_SIZE 10
+#define MAILBOX_HEADER_SIZE 6
+#define AOE_HEADER_SIZE 32
+#define AOE_ID_LENGTH 6
+#define AOE_PORT_LENGTH 2
+#define EOE_HEADER_SIZE 18
+#define COE_HEADER_SIZE 10
+#define FOE_HEADER_SIZE 14
+#define SOE_HEADER_SIZE 7
 
 namespace zeek::packet_analysis::ETHERCAT {
 
@@ -32,7 +45,7 @@ namespace zeek::packet_analysis::ETHERCAT {
         uint8_t index; /**< Index (set by master */
         uint8_t mailbox_type;
         uint8_t last_indicator;
-        uint8_t data[1508]; /**< Datagram payload. */
+        uint8_t data[MAX_DATA_SIZE]; /**< Datagram payload. */
         uint16_t length;
         uint16_t interrupt;
         uint16_t working_counter; /**< Working counter. */
@@ -64,7 +77,7 @@ namespace zeek::packet_analysis::ETHERCAT {
     typedef struct {
         uint8_t targetid[6];
         uint8_t senderid[6];
-        uint8_t req_res[200];
+        uint8_t req_res[MAX_DATA_SIZE];
         uint8_t counter;
         uint16_t cmd;
         uint16_t targetport;
@@ -100,9 +113,9 @@ namespace zeek::packet_analysis::ETHERCAT {
         uint32_t error_code;
         uint8_t opCode;
         uint8_t reserved;
-        uint8_t filename[max_foe_data];
-        uint8_t data[max_foe_data];
-        uint8_t error_txt[max_foe_data];
+        uint8_t filename[MAX_FOE_DATA_SIZE];
+        uint8_t data[MAX_FOE_DATA_SIZE];
+        uint8_t error_txt[MAX_FOE_DATA_SIZE];
     } ecat_mailbox_foe;
 
     // header structure found in open source documents ros.org
@@ -151,10 +164,22 @@ namespace zeek::packet_analysis::ETHERCAT {
             }
 
     private:
-        uint16_t GetLengthLastInd(uint16_t counter, const uint8_t* data, uint16_t datagram_pos);
-        uint16_t GetSlaveOffsetAddr(uint16_t counter, const uint8_t* data, uint16_t datagram_pos);
-        uint16_t OffsetAddressParse(uint16_t counter, const uint8_t* data, uint16_t datagram_pos, uint16_t offsetaddress, uint16_t length);
-        void EcatMailboxParse(uint16_t length, const uint8_t* data, uint16_t position);
+        bool parseMessageHeader(const uint8_t* data, size_t length, uint16_t &messageLength, bool &reserveBit, uint8_t &messageType);
+        bool parseDatagram(const uint8_t* data, size_t length, uint8_t currentIndex, uint16_t &dataProcessed);
+        bool parseDatagramHeader(const uint8_t* data, size_t length, uint8_t currentIndex);
+        bool parseDatagramBody(const uint8_t* data, size_t length, uint8_t currentIndex, uint16_t &dataProcessed, bool &failedInFurtherProcessing);
+        bool furtherProcessDatagramBody(uint8_t currentIndex);
+        bool processDevTypeData(uint8_t currentIndex);
+        bool processPDRAMData(uint8_t currentIndex);
+        bool parseMailbox(uint8_t currentIndex);
+        bool parseAOE(uint8_t currentIndex);
+        bool parseEOE(uint8_t currentIndex);
+        bool parseCOE(uint8_t currentIndex);
+        bool parseFOE(uint8_t currentIndex);
+        bool parseSOE(uint8_t currentIndex);
+        bool parseDatagramTrailer(const uint8_t* data, size_t length, uint8_t currentIndex);
+        bool commandUsesRegularAddress(uint8_t command);
+        uint16_t determineOffsetName(uint16_t offsetAddress);
         zeek::AddrValPtr ToAddrVal(const void* addr);
         zeek::StringValPtr ToEthAddrStr(const u_char* addr);
         zeek::StringValPtr HexToString(const u_char* data, uint16_t len);
