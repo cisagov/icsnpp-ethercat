@@ -29,6 +29,7 @@ export {
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_registers: event(rec: ECAT_REGISTER);
+    global log_policy_ecat_registers: Log::PolicyHook;
 
     ###############################################################################################
     ############################  ECAT_LOG_ADDR -> ecat_log_address.log  ###########################
@@ -44,6 +45,7 @@ export {
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_addr: event(rec: ECAT_LOG_ADDR);
+    global log_policy_ecat_addr: Log::PolicyHook;
 
     ###############################################################################################
     #############################  ECAT_DEV_INFO -> ecat_dev_info.log   ############################
@@ -62,6 +64,7 @@ export {
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_dev: event(rec: ECAT_DEV_INFO);
+    global log_policy_ecat_dev: Log::PolicyHook;
 
     ###############################################################################################
     #############################  ECAT_AOE_INFO -> ecat_aoe_info.log   ############################
@@ -78,6 +81,7 @@ export {
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_aoe: event(rec: ECAT_AOE_INFO);
+    global log_policy_ecat_aoe: Log::PolicyHook;
 
     ###############################################################################################
     #############################  ECAT_COE_INFO -> ecat_coe_info.log   ############################
@@ -93,6 +97,7 @@ export {
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_coe: event(rec: ECAT_COE_INFO);
+    global log_policy_ecat_coe: Log::PolicyHook;
 
     ###############################################################################################
     #############################  ECAT_FOE_INFO -> ecat_foe_info.log   ############################
@@ -108,6 +113,7 @@ export {
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_foe: event(rec: ECAT_FOE_INFO);
+    global log_policy_ecat_foe: Log::PolicyHook;
 
     ###############################################################################################
     #############################  ECAT_SOE_INFO -> ecat_soe_info.log   ############################
@@ -123,6 +129,7 @@ export {
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_soe: event(rec: ECAT_SOE_INFO);
+    global log_policy_ecat_soe: Log::PolicyHook;
 
     ###############################################################################################
     #############################  ECAT_ARP_INFO -> ecat_arp_info.log   ############################
@@ -139,6 +146,7 @@ export {
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_arp: event(rec: ECAT_ARP_INFO);
+    global log_policy_ecat_arp: Log::PolicyHook;
 }
 
 
@@ -150,14 +158,14 @@ export {
 ###################################################################################################
 event zeek_init() &priority=20 {
 
-	Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_REGISTERS, [$columns=ECAT_REGISTER, $ev=log_ecat_registers, $path="ecat_registers"]);
-	Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_ADDRESS, [$columns=ECAT_LOG_ADDR, $ev=log_ecat_addr, $path="ecat_log_address"]);
-    Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_DEV_INFO, [$columns=ECAT_DEV_INFO, $ev=log_ecat_dev, $path="ecat_dev_info"]);
-    Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_AOE_INFO, [$columns=ECAT_AOE_INFO, $ev=log_ecat_aoe, $path="ecat_aoe_info"]);
-    Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_COE_INFO, [$columns=ECAT_COE_INFO, $ev=log_ecat_coe, $path="ecat_coe_info"]);
-    Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_FOE_INFO, [$columns=ECAT_FOE_INFO, $ev=log_ecat_foe, $path="ecat_foe_info"]);
-    Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_SOE_INFO, [$columns=ECAT_SOE_INFO, $ev=log_ecat_soe, $path="ecat_soe_info"]);
-    Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_ARP_INFO, [$columns=ECAT_ARP_INFO, $ev=log_ecat_arp, $path="ecat_arp_info"]);
+	Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_REGISTERS, [$columns=ECAT_REGISTER, $ev=log_ecat_registers, $path="ecat_registers", $policy=log_policy_ecat_registers]);
+	Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_ADDRESS, [$columns=ECAT_LOG_ADDR, $ev=log_ecat_addr, $path="ecat_log_address", $policy=log_policy_ecat_addr]);
+    Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_DEV_INFO, [$columns=ECAT_DEV_INFO, $ev=log_ecat_dev, $path="ecat_dev_info", $policy=log_policy_ecat_dev]);
+    Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_AOE_INFO, [$columns=ECAT_AOE_INFO, $ev=log_ecat_aoe, $path="ecat_aoe_info", $policy=log_policy_ecat_aoe]);
+    Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_COE_INFO, [$columns=ECAT_COE_INFO, $ev=log_ecat_coe, $path="ecat_coe_info", $policy=log_policy_ecat_coe]);
+    Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_FOE_INFO, [$columns=ECAT_FOE_INFO, $ev=log_ecat_foe, $path="ecat_foe_info", $policy=log_policy_ecat_foe]);
+    Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_SOE_INFO, [$columns=ECAT_SOE_INFO, $ev=log_ecat_soe, $path="ecat_soe_info", $policy=log_policy_ecat_soe]);
+    Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_ARP_INFO, [$columns=ECAT_ARP_INFO, $ev=log_ecat_arp, $path="ecat_arp_info", $policy=log_policy_ecat_arp]);
     PacketAnalyzer::register_packet_analyzer(PacketAnalyzer::ANALYZER_ETHERNET, 0x88a4, PacketAnalyzer::ANALYZER_ETHERCAT);
     PacketAnalyzer::register_packet_analyzer(PacketAnalyzer::ANALYZER_ETHERCAT, 0x0800, PacketAnalyzer::ANALYZER_IP);
     PacketAnalyzer::register_packet_analyzer(PacketAnalyzer::ANALYZER_ETHERCAT, 0x0806, PacketAnalyzer::ANALYZER_ARP);
