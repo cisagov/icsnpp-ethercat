@@ -1,12 +1,12 @@
-## Copyright (c) 2020 Battelle Energy Alliance, LLC.  All rights reserved."
-## main.zeek
-##
-## Packet Analyzer Ethercat Analyzer - Contains the base script-layer 
-##                                     functionality for processing events 
-##                                     emitted from the analyzer.
-##
-## Author:   Devin Vollmer
-## Contact:  devin.vollmer@inl.gov
+##! Copyright (c) 2020 Battelle Energy Alliance, LLC.  All rights reserved."
+##! main.zeek
+##!
+##! Packet Analyzer Ethercat Analyzer - Contains the base script-layer
+##!                                     functionality for processing events
+##!                                     emitted from the analyzer.
+##!
+##! Author:   Devin Vollmer
+##! Contact:  devin.vollmer@inl.gov
 
 module PacketAnalyzer::ECAT;
 
