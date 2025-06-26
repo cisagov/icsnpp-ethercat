@@ -16,7 +16,6 @@ This parser produces eight log files. These log files are defined in [scripts/ic
 * ecat_coe_info.log 
 * ecat_foe_info.log 
 * ecat_soe_info.log 
-* ecat_arp_info.log 
 
 For additional information on these log files, see the *Logging Capabilities* section below.
 
@@ -217,26 +216,6 @@ This log captures SoE (Servo over Ethercat) and logs it to **ecat_soe_info.log**
 | element_flags     | string    | Element flags                                             |
 | index             | string    | Message index                                             |
 
-### ECAT ARP Info (ecat_arp_info.log)
-
-#### Overview
-
-This log captures ARP info that is passed through EoE (Ethernet over Ethercat)
-and logs it to **ecat_arp_info.log**.
-
-#### Fields Captured
-
-| Field             | Type      | Description                                               |
-| ----------------- |-----------|-----------------------------------------------------------| 
-| ts                | time      | Timestamp                                                 |
-| arp_type          | string    | ARP command                                               |
-| mac_src           | string    | Source MAC address                                        |
-| mac_dst           | string    | Destination MAC address                                   |
-| SPA               | addr      | Sender protocol address                                   |
-| SHA               | string    | Sender hardware address                                   |
-| TPA               | addr      | Target protocol address                                   |
-| THA               | string    | Target hardware address                                   |
-
 ## ICSNPP Packages
 
 All ICSNPP Packages:
@@ -252,12 +231,18 @@ Full ICS Protocol Parsers:
     * Full Zeek protocol parser for Ethercat
 * [Ethernet/IP and CIP](https://github.com/cisagov/icsnpp-enip)
     * Full Zeek protocol parser for Ethernet/IP and CIP
-* [GE SRTP](https://github.com/cisagov/icsnpp-ge-srtp)
-    * Full Zeek protocol parser for GE SRTP
+* [GE-SRTP](https://github.com/cisagov/icsnpp-ge-srtp)
+    * Zeek protocol parser for GE-SRTP
 * [Genisys](https://github.com/cisagov/icsnpp-genisys)
     * Full Zeek protocol parser for Genisys
+* [HART-IP](https://github.com/cisagov/icsnpp-hart-ip)
+    * Zeek protocol parser for HART-IP
+* [Omron FINS](https://github.com/cisagov/icsnpp-omron-fins)
+    * Zeek protocol parser for Omron FINS
 * [OPCUA-Binary](https://github.com/cisagov/icsnpp-opcua-binary)
     * Full Zeek protocol parser for OPC UA (OPC Unified Architecture) - Binary
+* [ROC-Plus](https://github.com/cisagov/icsnpp-roc-plus)
+    * Full Zeek protocol parser for ROC Plus
 * [S7Comm](https://github.com/cisagov/icsnpp-s7comm)
     * Full Zeek protocol parser for S7comm, S7comm-plus, and COTP
 * [Synchrophasor](https://github.com/cisagov/icsnpp-synchrophasor)

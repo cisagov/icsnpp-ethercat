@@ -131,22 +131,6 @@ export {
     global log_ecat_soe: event(rec: ECAT_SOE_INFO);
     global log_policy_ecat_soe: Log::PolicyHook;
 
-    ###############################################################################################
-    #############################  ECAT_ARP_INFO -> ecat_arp_info.log   ############################
-    ###############################################################################################
-    type ECAT_ARP_INFO: record {
-        ts              : time      &log;                   ## Timestamp for when the event happened
-        arp_type        : string    &log;                   ## Arp command
-        mac_src         : string    &log;                   ## Source Mac address
-        mac_dst         : string    &log;                   ## Destination Mac address
-        SPA             : addr      &log;                   ## Sender protocol address
-        SHA             : string    &log;                   ## Sender hardware address
-        TPA             : addr      &log;                   ## Target protocol address
-        THA             : string    &log;                   ## Target hardware address
-        # ## TODO: Add other fields here that you'd like to log.
-    };
-    global log_ecat_arp: event(rec: ECAT_ARP_INFO);
-    global log_policy_ecat_arp: Log::PolicyHook;
 }
 
 
@@ -165,11 +149,8 @@ event zeek_init() &priority=20 {
     Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_COE_INFO, [$columns=ECAT_COE_INFO, $ev=log_ecat_coe, $path="ecat_coe_info", $policy=log_policy_ecat_coe]);
     Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_FOE_INFO, [$columns=ECAT_FOE_INFO, $ev=log_ecat_foe, $path="ecat_foe_info", $policy=log_policy_ecat_foe]);
     Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_SOE_INFO, [$columns=ECAT_SOE_INFO, $ev=log_ecat_soe, $path="ecat_soe_info", $policy=log_policy_ecat_soe]);
-    Log::create_stream(PacketAnalyzer::ECAT::LOG_ECAT_ARP_INFO, [$columns=ECAT_ARP_INFO, $ev=log_ecat_arp, $path="ecat_arp_info", $policy=log_policy_ecat_arp]);
     PacketAnalyzer::register_packet_analyzer(PacketAnalyzer::ANALYZER_ETHERNET, 0x88a4, PacketAnalyzer::ANALYZER_ETHERCAT);
-    PacketAnalyzer::register_packet_analyzer(PacketAnalyzer::ANALYZER_ETHERCAT, 0x0800, PacketAnalyzer::ANALYZER_IP);
-    PacketAnalyzer::register_packet_analyzer(PacketAnalyzer::ANALYZER_ETHERCAT, 0x0806, PacketAnalyzer::ANALYZER_ARP);
-    
+    PacketAnalyzer::register_packet_analyzer(PacketAnalyzer::ANALYZER_ETHERCAT, 0x0800, PacketAnalyzer::ANALYZER_IP);    
 }
 
 ###############################################################################################
@@ -303,40 +284,4 @@ event ecat_SoE(opCode: count, incomplete: count, error: count, drive_num: count,
     info$index  = fmt("0x%02x", index);
 
     Log::write(PacketAnalyzer::ECAT::LOG_ECAT_SOE_INFO, info);        
-    }
-
-###############################################################################################
-################ Defines logging of ecat_arp_info event -> ecat_arp_info.log  #################
-###############################################################################################
-event arp_request(mac_src: string, mac_dst: string, SPA: addr, SHA: string, TPA: addr, THA: string)
-    {
-    local info: ECAT_ARP_INFO;
-    info$ts  = network_time();
-    info$arp_type   = "Request";
-    info$mac_src    = mac_src;
-    info$mac_dst    = mac_dst;
-    info$SPA        = SPA;
-    info$SHA        = SHA;
-    info$TPA        = TPA;
-    info$THA        = THA;
-
-    Log::write(PacketAnalyzer::ECAT::LOG_ECAT_ARP_INFO, info); 
-    }
-
-###############################################################################################
-################ Defines logging of ecat_arp_info event -> ecat_arp_info.log  #################
-###############################################################################################
-event arp_reply(mac_src: string, mac_dst: string, SPA: addr, SHA: string, TPA: addr, THA: string)
-    {
-    local info: ECAT_ARP_INFO;
-    info$ts  = network_time();
-    info$arp_type   = "Reply";
-    info$mac_src    = mac_src;
-    info$mac_dst    = mac_dst;
-    info$SPA        = SPA;
-    info$SHA        = SHA;
-    info$TPA        = TPA;
-    info$THA        = THA;
-
-    Log::write(PacketAnalyzer::ECAT::LOG_ECAT_ARP_INFO, info); 
     }
