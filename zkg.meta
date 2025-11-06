@@ -2,7 +2,7 @@
 build_dir = build/ICSNPP_Ethercat.tgz
 script_dir = build/scripts/icsnpp/ethercat
 build_command = ./configure && make
-test_command = cd tests && btest -c btest.cfg
+test_command = cd testing && btest -c btest.cfg
 description = Ethercat plugin for parsing and logging of the Ethercat protocol - CISA ICSNPP
 credits = Devin Vollmer <devin.vollmer@inl.gov>
 tags =  ecat, ECAT, ethercat, Ethercat, ics, ICS, CISA, INL, ICSNPP, icsnpp, zeek plugin, log writer, packet analyzer
