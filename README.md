@@ -223,6 +223,13 @@ This log captures SoE (Servo over Ethercat) and logs it to **ecat_soe_info.log**
 | element_flags     | string    | Element flags                                             |
 | index             | string    | Message index                                             |
 
+
+## ICSNPP Packages
+
+All ICSNPP Packages:
+
+* [ICSNPP](https://github.com/cisagov/icsnpp)
+  
 ### License
 
 Copyright 2023 Battelle Energy Alliance, LLC. Released under the terms of the 3-Clause BSD License (see [`LICENSE.txt`](./LICENSE.txt)).
