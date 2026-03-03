@@ -18,14 +18,14 @@ export {
     #############################  ECAT_REGISTER -> ecat_registers.log  ############################
     ###############################################################################################
     type ECAT_REGISTER: record {
-        ts              : time      &log;                   ## Timestamp for when the event happened
-        srcmac 			: string 	&log;                   ## Source Mac Address
-        dstmac 			: string 	&log;                   ## Destination Mac Address
-        Command         : string    &log;                   ## Ethercat Command
-        Slave_Addr      : string    &log;                   ## Ethercat Slave Address
-        Register_Type   : string    &log;                   ## Register Information
-       	Register_Addr   : string 	&log;                   ## Memory Address being accessed
-        data 		    : string    &log;                   ## Data to be read or wrote to memory address
+        ts              : time      &log;                   ##< Timestamp for when the event happened
+        srcmac 			: string 	&log;                   ##< Source Mac Address
+        dstmac 			: string 	&log;                   ##< Destination Mac Address
+        Command         : string    &log;                   ##< Ethercat Command
+        Slave_Addr      : string    &log;                   ##< Ethercat Slave Address
+        Register_Type   : string    &log;                   ##< Register Information
+       	Register_Addr   : string 	&log;                   ##< Memory Address being accessed
+        data 		    : string    &log;                   ##< Data to be read or wrote to memory address
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_registers: event(rec: ECAT_REGISTER);
@@ -35,13 +35,13 @@ export {
     ############################  ECAT_LOG_ADDR -> ecat_log_address.log  ###########################
     ###############################################################################################
     type ECAT_LOG_ADDR: record {
-        ts              : time      &log;                   ## Timestamp for when the event happened
-        srcmac 			: string 	&log;                   ## Source Mac Address
-        dstmac 			: string 	&log;                   ## Destination Mac Address
-        Log_Addr     	: string 	&log;                   ## Address data is being accessed from  
-        Length 			: count 	&log;                   ## Length of data
-        Command 		: string 	&log;                   ## Ethercat Command
-        data 		    : string    &log;                   ## Data read or write
+        ts              : time      &log;                   ##< Timestamp for when the event happened
+        srcmac 			: string 	&log;                   ##< Source Mac Address
+        dstmac 			: string 	&log;                   ##< Destination Mac Address
+        Log_Addr     	: string 	&log;                   ##<Address data is being accessed from  
+        Length 			: count 	&log;                   ##< Length of data
+        Command 		: string 	&log;                   ##< Ethercat Command
+        data 		    : string    &log;                   ##< Data read or write
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_addr: event(rec: ECAT_LOG_ADDR);
@@ -51,16 +51,16 @@ export {
     #############################  ECAT_DEV_INFO -> ecat_dev_info.log   ############################
     ###############################################################################################
     type ECAT_DEV_INFO: record {
-        ts              : time      &log;                   ## Timestamp for when the event happened
-        slave_id        : string    &log;                   ## Ethercat Slave Address
-        revision        : string    &log;                   ## Default Zeek connection info (IP addresses, ports)
-        dev_type        : string    &log;                   ## Number of functions per message
-        build           : string    &log;                   ## Build version
-        fmmucnt         : string    &log;                   ## Fieldbus Memory Management Unit supported channel count 
-        smcount         : string    &log;                   ## Sync Manager count
-        ports           : string    &log;                   ## Port Descriptor
-        dpram           : string    &log;                   ## Ram size
-        features        : string    &log;                   ## Features supported
+        ts              : time      &log;                   ##< Timestamp for when the event happened
+        slave_id        : string    &log;                   ##< Ethercat Slave Address
+        revision        : string    &log;                   ##< Default Zeek connection info (IP addresses, ports)
+        dev_type        : string    &log;                   ##< Number of functions per message
+        build           : string    &log;                   ##<Build version
+        fmmucnt         : string    &log;                   ##< Fieldbus Memory Management Unit supported channel count 
+        smcount         : string    &log;                   ##< Sync Manager count
+        ports           : string    &log;                   ##< Port Descriptor
+        dpram           : string    &log;                   ##< Ram size
+        features        : string    &log;                   ##< Features supported
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_dev: event(rec: ECAT_DEV_INFO);
@@ -70,14 +70,14 @@ export {
     #############################  ECAT_AOE_INFO -> ecat_aoe_info.log   ############################
     ###############################################################################################
     type ECAT_AOE_INFO: record {
-        ts              : time      &log;                   ## Timestamp for when the event happened
-        targetid        : string    &log;                   ## Target Network ID
-        targetport      : string    &log;                   ## Target Port
-        senderid        : string    &log;                   ## Sender Network ID
-        senderport      : string    &log;                   ## Sender Port
-        cmd             : string    &log;                   ## Command
-        stateflags      : string    &log;                   ## State Flags
-        data            : string    &log;                   ## Command Data
+        ts              : time      &log;                   ##< Timestamp for when the event happened
+        targetid        : string    &log;                   ##< Target Network ID
+        targetport      : string    &log;                   ##< Target Port
+        senderid        : string    &log;                   ##< Sender Network ID
+        senderport      : string    &log;                   ##< Sender Port
+        cmd             : string    &log;                   ##< Command
+        stateflags      : string    &log;                   ##< State Flags
+        data            : string    &log;                   ##< Command Data
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_aoe: event(rec: ECAT_AOE_INFO);
@@ -87,13 +87,13 @@ export {
     #############################  ECAT_COE_INFO -> ecat_coe_info.log   ############################
     ###############################################################################################
     type ECAT_COE_INFO: record {
-        ts              : time      &log;                   ## Timestamp for when the event happened
-        number          : string    &log;                   ## Message number
-        Type            : string    &log;                   ## Message Type
-        req_resp        : string    &log;                   ## Request or Response type
-        index           : string    &log;                   ## Index
-        subindex        : string    &log;                   ## Sub Index
-        dataoffset      : string    &log;                   ## Data Offset
+        ts              : time      &log;                   ##< Timestamp for when the event happened
+        number          : string    &log;                   ##< Message number
+        Type            : string    &log;                   ##< Message Type
+        req_resp        : string    &log;                   ##< Request or Response type
+        index           : string    &log;                   ##< Index
+        subindex        : string    &log;                   ##< Sub Index
+        dataoffset      : string    &log;                   ##< Data Offset
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_coe: event(rec: ECAT_COE_INFO);
@@ -103,13 +103,13 @@ export {
     #############################  ECAT_FOE_INFO -> ecat_foe_info.log   ############################
     ###############################################################################################
     type ECAT_FOE_INFO: record {
-        ts              : time      &log;                   ## Timestamp for when the event happened
-        opCode          : string    &log;                   ## Operation Code
-        reserved        : string    &log;                   ## Reserved
-        packet_num      : string    &log;                   ## Packet number
-        error_code      : string    &log;                   ## Error Code
-        filename        : string    &log;                   ## Filename
-        data            : string    &log;                   ## Transferred Data
+        ts              : time      &log;                   ##< Timestamp for when the event happened
+        opCode          : string    &log;                   ##< Operation Code
+        reserved        : string    &log;                   ##< Reserved
+        packet_num      : string    &log;                   ##< Packet number
+        error_code      : string    &log;                   ##< Error Code
+        filename        : string    &log;                   ##< Filename
+        data            : string    &log;                   ##< Transferred Data
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_foe: event(rec: ECAT_FOE_INFO);
@@ -119,13 +119,13 @@ export {
     #############################  ECAT_SOE_INFO -> ecat_soe_info.log   ############################
     ###############################################################################################
     type ECAT_SOE_INFO: record {
-        ts              : time      &log;                   ## Timestamp for when the event happened
-        opCode          : string    &log;                   ## Command sent for controller
-        incomplete      : string    &log;                   ## Function check to determine if it has been processed
-        error           : string    &log;                   ## Error message
-        drive_num       : string    &log;                   ## Drive number for command
-        element_flags   : string    &log;                   ## Element Flags
-        index           : string    &log;                   ## Message Index
+        ts              : time      &log;                   ##< Timestamp for when the event happened
+        opCode          : string    &log;                   ##< Command sent for controller
+        incomplete      : string    &log;                   ##< Function check to determine if it has been processed
+        error           : string    &log;                   ##< Error message
+        drive_num       : string    &log;                   ##< Drive number for command
+        element_flags   : string    &log;                   ##< Element Flags
+        index           : string    &log;                   ##< Message Index
         # ## TODO: Add other fields here that you'd like to log.
     };
     global log_ecat_soe: event(rec: ECAT_SOE_INFO);
